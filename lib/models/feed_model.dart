@@ -2,6 +2,8 @@
 //
 //     final feed = feedFromJson(jsonString);
 
+// ignore_for_file: constant_identifier_names
+
 import 'dart:convert';
 
 Feed feedFromJson(String str) => Feed.fromJson(json.decode(str));

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:one_page_app/services/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -118,11 +117,13 @@ class _SignInPageState extends State<SignInPage> {
                       'u_059e304c-bf71-4ef0-87df-3d0fc76e921d');
 
                   if (loginResult == "OK") {
+                    
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const OnePage(),
+                        builder: (context) =>  OnePage(),
                       ),
                     );
+                   
                   }
                 },
                 child: Text("Sign In"),
