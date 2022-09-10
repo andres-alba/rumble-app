@@ -1,15 +1,11 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:one_page_app/models/feed_model.dart';
 import 'package:one_page_app/models/login_model.dart';
-import 'package:one_page_app/views/one_page.dart';
 //import 'dart:convert';
 
 String loginResult = "";
 String bearerToken = "";
-
 
 void loginController(String email, String pass, String deviceId) async {
   try {
@@ -44,37 +40,33 @@ void loginController(String email, String pass, String deviceId) async {
   }
 }
 
-  Future<Feed> getFeed() async {
-    try {
-      var headers = {
-        'X-APP-AUTH-TOKEN': '$bearerToken',
-        'X-DEVICE-ID': '7789e3ef-c87f-49c5-a2d3-5165927298f0',
-      };
-      var request = http.Request(
-          'POST',
-          Uri.parse(
-              'https://app-test.rr-qa.seasteaddigital.com/api/v1/posts/feed/global.json'));
-      request.body = json.encode({
-        "data": {"page_size": 10, "order": "recent", "lpid": 0}
-      });
-      request.headers.addAll(headers);
+Future<Feed> getFeed() async {
+  try {
+    var headers = {
+      'X-APP-AUTH-TOKEN': '$bearerToken',
+      'X-DEVICE-ID': '7789e3ef-c87f-49c5-a2d3-5165927298f0',
+    };
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            'https://app-test.rr-qa.seasteaddigital.com/api/v1/posts/feed/global.json'));
+    request.body = json.encode({
+      "data": {"page_size": 10, "order": "recent", "lpid": 0}
+    });
+    request.headers.addAll(headers);
 
-      http.StreamedResponse response = await request.send();
+    http.StreamedResponse response = await request.send();
 
-      if (response.statusCode == 200) {
-        var rawFeed = await response.stream.bytesToString();
-        var decodedData =  feedFromJson(rawFeed);
+    if (response.statusCode == 200) {
+      var rawFeed = await response.stream.bytesToString();
+      var decodedData = feedFromJson(rawFeed);
 
-        print(decodedData.data!.length);
+      print(decodedData.data!.length);
 
-        return decodedData;
-        
-      } else {
-      }
-    } catch (e) {
-      print('catch');
-    }
-    return Feed();
+      return decodedData;
+    } else {}
+  } catch (e) {
+    print('catch');
   }
-
-
+  return Feed();
+}
