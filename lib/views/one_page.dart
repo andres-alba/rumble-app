@@ -93,7 +93,7 @@ class _OnePageState extends State<OnePage> {
                   children: [
                     const Text(
                       'Sort by:',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
                     ),
                     const SizedBox(
                       width: 5,
@@ -102,26 +102,28 @@ class _OnePageState extends State<OnePage> {
                       data: Theme.of(context).copyWith(
                         canvasColor: Colors.black,
                       ),
-                      child: DropdownButton(
-                        value: currentSortOrder,
-                        items: sortByValues.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(
-                              '${items[0].toUpperCase()}${items.substring(1).toLowerCase()}',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String? newSortValue) {
-                          listFeed.clear();
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                          value: currentSortOrder,
+                          items: sortByValues.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(
+                                '${items[0].toUpperCase()}${items.substring(1).toLowerCase()}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newSortValue) {
+                            listFeed.clear();
 
-                          setState(() {
-                            currentSortOrder = newSortValue!;
-                          });
+                            setState(() {
+                              currentSortOrder = newSortValue!;
+                            });
 
-                          fetchFeed();
-                        },
+                            fetchFeed();
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -158,27 +160,41 @@ class _OnePageState extends State<OnePage> {
                                   Row(
                                     children: [
                                       CircleAvatar(
-                                        radius: 20.0,
+                                        radius: 30.0,
                                         backgroundImage: NetworkImage(
                                             author.authorAvatarUrl.toString()),
                                         backgroundColor: Colors.transparent,
                                       ),
                                       const SizedBox(
-                                        width: 5,
+                                        width: 10,
                                       ),
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            author.authorName.toString(),
-                                            style: const TextStyle(
-                                                color: Colors.red),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                author.authorName.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.red),
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text(
+                                                '@${author.authorName.toString().replaceAll(' ', '')}',
+                                                style: const TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                            ],
                                           ),
+                                          const SizedBox(height: 5),
                                           Text(
                                             timeAgo,
                                             style: const TextStyle(
-                                                color: Colors.white),
+                                                color: Colors.grey),
                                           ),
                                         ],
                                       ),
@@ -195,6 +211,7 @@ class _OnePageState extends State<OnePage> {
                                         color: Colors.white,
                                         fontSize: 18),
                                   ),
+                                  const SizedBox(height: 8),
                                   Text(
                                     author.text.toString(),
                                     maxLines: 4,
