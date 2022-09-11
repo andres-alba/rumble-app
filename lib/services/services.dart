@@ -40,10 +40,13 @@ void loginController(String email, String pass, String deviceId) async {
   }
 }
 
-Future<Feed> getFeed() async {
+Future<Feed> getFeed(
+    {int pageSize = 10,
+    required int lastPostId,
+    String order = "recent"}) async {
   try {
     var headers = {
-      'X-APP-AUTH-TOKEN': '$bearerToken',
+      'X-APP-AUTH-TOKEN': bearerToken,
       'X-DEVICE-ID': '7789e3ef-c87f-49c5-a2d3-5165927298f0',
     };
     var request = http.Request(
@@ -51,7 +54,7 @@ Future<Feed> getFeed() async {
         Uri.parse(
             'https://app-test.rr-qa.seasteaddigital.com/api/v1/posts/feed/global.json'));
     request.body = json.encode({
-      "data": {"page_size": 10, "order": "recent", "lpid": 0}
+      "data": {"page_size": pageSize, "order": order, "lpid": lastPostId}
     });
     request.headers.addAll(headers);
 

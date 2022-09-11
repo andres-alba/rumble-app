@@ -63,7 +63,7 @@ class Datum {
   int? timestamp;
   int? totalPostViews;
   bool? isBlured;
-  AuthorName? authorName;
+  String? authorName;
   AuthorAvatarExtension? authorAvatarExtension;
   String? authorAvatarUrl;
 
@@ -79,7 +79,7 @@ class Datum {
         timestamp: json["timestamp"],
         totalPostViews: json["total_post_views"],
         isBlured: json["is_blured"],
-        authorName: authorNameValues.map[json["author_name"]],
+        authorName: json["author_name"],
         authorAvatarExtension:
             authorAvatarExtensionValues.map[json["author_avatar_extension"]],
         authorAvatarUrl: json["author_avatar_url"],
@@ -97,7 +97,7 @@ class Datum {
         "timestamp": timestamp,
         "total_post_views": totalPostViews,
         "is_blured": isBlured,
-        "author_name": authorNameValues.reverse![authorName],
+        "author_name": authorName,
         "author_avatar_extension":
             authorAvatarExtensionValues.reverse![authorAvatarExtension],
         "author_avatar_url": authorAvatarUrl,

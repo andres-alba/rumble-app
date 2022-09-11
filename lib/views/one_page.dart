@@ -9,36 +9,45 @@ class OnePage extends StatefulWidget {
 }
 
 class _OnePageState extends State<OnePage> {
-  late Future<Feed> futureFeed;
   List<Datum> listFeed = [];
+  bool isLastPage = false;
+  List<String> sortByValues = [
+    'recent',
+    'oldest',
+  ];
+  late String currentSortOrder;
+
+  final controller = ScrollController();
 
   @override
   void initState() {
-    futureFeed = getFeed();
-    fetch();
-
     super.initState();
+    //set initial sort order
+    currentSortOrder = sortByValues[0];
+    // fetch initial feed data
+    fetchFeed();
+    // listen for when to fetch more feed data
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
-        fetch();
+        fetchFeed();
       }
     });
   }
 
-  Future fetch() async {
-    final feedData = await getFeed();
+  Future fetchFeed() async {
+    var lastFeedId = 0;
+
+    if (listFeed.isNotEmpty) {
+      lastFeedId = listFeed.last.id ?? 0;
+    }
+
+    final feedData =
+        await getFeed(lastPostId: lastFeedId, order: currentSortOrder);
+
     setState(() {
       listFeed.addAll(feedData.data as Iterable<Datum>);
     });
   }
-
-  bool isLastPage = false;
-  String dropdownvalue = 'Recent';
-  var items = [
-    'Recent',
-    'Oldest',
-  ];
-  final controller = ScrollController();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -59,22 +68,31 @@ class _OnePageState extends State<OnePage> {
                     const SizedBox(
                       width: 5,
                     ),
-                    DropdownButton(
-                      value: dropdownvalue,
-                      items: items.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(
-                            items,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownvalue = newValue!;
-                        });
-                      },
+                    Theme(
+                      data: Theme.of(context).copyWith(
+                        canvasColor: Colors.black,
+                      ),
+                      child: DropdownButton(
+                        value: currentSortOrder,
+                        items: sortByValues.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(
+                              '${items[0].toUpperCase()}${items.substring(1).toLowerCase()}',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newSortValue) {
+                          listFeed.clear();
+
+                          setState(() {
+                            currentSortOrder = newSortValue!;
+                          });
+
+                          fetchFeed();
+                        },
+                      ),
                     ),
                   ],
                 ),
