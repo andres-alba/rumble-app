@@ -73,7 +73,7 @@ class _SignInPageState extends State<SignInPage> {
             controller: controller,
             style: const TextStyle(color: Colors.black),
             decoration: InputDecoration(
-                hintText: "input a password",
+                hintText: "input",
                 hintStyle:
                     const TextStyle(color: Color(0xFFE1E1E1), fontSize: 14),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 10),
@@ -111,7 +111,7 @@ class _SignInPageState extends State<SignInPage> {
               height: 40,
               child: ElevatedButton(
                 onPressed: () async {
-                  loginController('testlocals0@gmail.com', 'jahubhsgvd23',
+                  loginController(emailController.text, passwordController.text,
                       'u_059e304c-bf71-4ef0-87df-3d0fc76e921d');
 
                   if (loginResult == "OK") {
