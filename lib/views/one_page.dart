@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:one_page_app/models/feed_model.dart';
 import 'package:one_page_app/services/services.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:intl/intl.dart';
 
 class OnePage extends StatefulWidget {
   @override
@@ -47,6 +49,34 @@ class _OnePageState extends State<OnePage> {
     setState(() {
       listFeed.addAll(feedData.data as Iterable<Datum>);
     });
+  }
+
+  String timeAgo(DateTime fatchedDate) {
+    DateTime currentDate = DateTime.now();
+
+    var different = currentDate.difference(fatchedDate);
+
+    if (different.inDays > 365) {
+      return "${(different.inDays / 365).floor()} ${(different.inDays / 365).floor() == 1 ? "year" : "years"} ago";
+    }
+    if (different.inDays > 30) {
+      return "${(different.inDays / 30).floor()} ${(different.inDays / 30).floor() == 1 ? "month" : "months"} ago";
+    }
+    if (different.inDays > 7) {
+      return "${(different.inDays / 7).floor()} ${(different.inDays / 7).floor() == 1 ? "week" : "weeks"} ago";
+    }
+    if (different.inDays > 0) {
+      return "${different.inDays} ${different.inDays == 1 ? "day" : "days"} ago";
+    }
+    if (different.inHours > 0) {
+      return "${different.inHours} ${different.inHours == 1 ? "hour" : "hours"} ago";
+    }
+    if (different.inMinutes > 0) {
+      return "${different.inMinutes} ${different.inMinutes == 1 ? "minute" : "minutes"} ago";
+    }
+    if (different.inMinutes == 0) return 'Just Now';
+
+    return fatchedDate.toString();
   }
 
   @override
@@ -111,6 +141,10 @@ class _OnePageState extends State<OnePage> {
 
                     if (index < listFeed.length) {
                       final author = listFeed[index];
+                      DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                          author.timestamp! * 1000);
+                      var timeAgo = timeago.format(date);
+
                       return Container(
                         color: Colors.black87,
                         child: Column(
@@ -142,7 +176,7 @@ class _OnePageState extends State<OnePage> {
                                                 color: Colors.red),
                                           ),
                                           Text(
-                                            author.timestamp.toString(),
+                                            timeAgo,
                                             style: const TextStyle(
                                                 color: Colors.white),
                                           ),

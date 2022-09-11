@@ -13,6 +13,8 @@ environment:
 dependencies:
   http:
   connectivity_plus:
+  timeago:
+  intl:
   flutter:
     sdk: flutter
 
