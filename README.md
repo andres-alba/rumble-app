@@ -1,6 +1,6 @@
 # one_page_app
 
-A new Flutter project.
+A flutter app with pagination implementation.
 
 ## Getting Started
 
